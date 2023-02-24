@@ -8,17 +8,16 @@ struct State {
 impl State {
     fn new() -> Self {
         Self {
-            cells: vec![1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            cells: vec![1, 1, 0],
         }
     }
 
     fn step(&mut self) {
         let mut next_state: Vec<u8> = Vec::new();
-        self.cells.push(0);
-        self.cells.push(0);
         let mut tmp_state: Vec<u8> = vec![0, 0];
         tmp_state.append(&mut self.cells.clone());
-        for i in 2..self.cells.len() {
+        tmp_state.append(&mut vec![0, 0]);
+        for i in 2..tmp_state.len() {
             let a = tmp_state[i - 2];
             let b = tmp_state[i - 1];
             let c = tmp_state[i];
@@ -45,7 +44,13 @@ impl fmt::Display for State {
 
 fn main() {
     let mut state: State = State::new();
-    for _ in 0..25 {
+    println!("{}", state);
+    loop {
+        let mut input: String = Default::default();
+        std::io::stdin().read_line(&mut input).unwrap();
+        if input != "\n" {
+            break;
+        }
         state.step();
         println!("{}", state);
     }
